@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import authRoutes from './routes/auth.js';
+import productsRouter from './routes/products.js';
 
 dotenv.config();
 
@@ -13,5 +14,6 @@ app.use('/api/auth', authRoutes);
 app.get("/",(req,res)=>{
     res.status(200).send("working")
 })
+app.use('/api/products', productsRouter);
 
 app.listen(4000);
