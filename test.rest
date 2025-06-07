@@ -1,3 +1,5 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1LTU0ZTEtNGUyNS1hZGRjLTBlOGIyY2MxNzc3YSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImlhdCI6MTc0OTIyMzM0MiwiZXhwIjoxNzQ5MzA5NzQyfQ.MgB_LXPybFFMmrYOQBc3sVzuvhnb73ZHYig5n76Ajmw
+
 ###registeration test
 POST http://localhost:4000/api/auth/register
 Content-Type: application/json
@@ -51,3 +53,40 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1L
 ###delete product
 DELETE http://localhost:4000/api/products/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1LTU0ZTEtNGUyNS1hZGRjLTBlOGIyY2MxNzc3YSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImlhdCI6MTc0OTIyMzM0MiwiZXhwIjoxNzQ5MzA5NzQyfQ.MgB_LXPybFFMmrYOQBc3sVzuvhnb73ZHYig5n76Ajmw
+
+### Add to Cart - Add new or update quantity
+POST http://localhost:4000/cart/add
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "product_id": "f89e2769-c9a1-4d42-ba9d-59e1caaf42c5",
+  "quantity": 2
+}
+
+### Get Cart Items
+GET http://localhost:4000/cart
+Authorization: Bearer {{token}}
+
+### Update Cart Quantity
+PUT http://localhost:4000/cart/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "cart_item_id": "b13e84f1-d57f-4b82-a1eb-2d8085f359fa",
+  "quantity": 5
+}
+
+### Delete Cart Item
+DELETE http://localhost:4000/cart/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "cart_item_id": "b13e84f1-d57f-4b82-a1eb-2d8085f359fa"
+}
+
+### Clear Cart
+DELETE http://localhost:4000/cart/clear
+Authorization: Bearer {{token}}
