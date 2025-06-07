@@ -1,12 +1,13 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1LTU0ZTEtNGUyNS1hZGRjLTBlOGIyY2MxNzc3YSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImlhdCI6MTc0OTIyMzM0MiwiZXhwIjoxNzQ5MzA5NzQyfQ.MgB_LXPybFFMmrYOQBc3sVzuvhnb73ZHYig5n76Ajmw
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1LTU0ZTEtNGUyNS1hZGRjLTBlOGIyY2MxNzc3YSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzQ5Mjc3Mjk1LCJleHAiOjE3NDkzNjM2OTV9.q7wOQNdp1LvZpJU4JIC08c7xWJNPObt9ZxEp6T8Hd4s
 
 ###registeration test
 POST http://localhost:4000/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "tes@example.com",
-  "password": "secret123"
+  "email": "admin@ezstore.com",
+  "password": "password123",
+  "role":"admin"
 }
 
 ###login test
@@ -20,12 +21,11 @@ Content-Type: application/json
 
 ###get test
 GET http://localhost:4000/api/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1LTU0ZTEtNGUyNS1hZGRjLTBlOGIyY2MxNzc3YSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImlhdCI6MTc0OTIyMzM0MiwiZXhwIjoxNzQ5MzA5NzQyfQ.MgB_LXPybFFMmrYOQBc3sVzuvhnb73ZHYig5n76Ajmw
-
+Authorization: Bearer {{token}}
 ###add product
 POST http://localhost:4000/api/products
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1LTU0ZTEtNGUyNS1hZGRjLTBlOGIyY2MxNzc3YSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImlhdCI6MTc0OTIyMzM0MiwiZXhwIjoxNzQ5MzA5NzQyfQ.MgB_LXPybFFMmrYOQBc3sVzuvhnb73ZHYig5n76Ajmw
+Authorization: Bearer {{token}}
 
 {
   "name": "iPhone 15",
@@ -36,57 +36,68 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1L
 ###get all products
 GET http://localhost:4000/api/products
 ###get products by id
-GET http://localhost:4000/api/products/1
+GET http://localhost:4000/api/products/a57caac4-989e-4434-a5ac-e7f059f4cb87
 
 ###update product
-PUT http://localhost:4000/api/products/1
+PUT http://localhost:4000/api/products/a57caac4-989e-4434-a5ac-e7f059f4cb87
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1LTU0ZTEtNGUyNS1hZGRjLTBlOGIyY2MxNzc3YSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImlhdCI6MTc0OTIyMzM0MiwiZXhwIjoxNzQ5MzA5NzQyfQ.MgB_LXPybFFMmrYOQBc3sVzuvhnb73ZHYig5n76Ajmw
+Authorization: Bearer {{token}}
 
 {
   "name": "iPhone 15 Pro",
   "description": "Updated model",
-  "price": 1099.99,
+  "price": 1090.99,
   "stock": 15
 }
 
 ###delete product
-DELETE http://localhost:4000/api/products/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YWRmZmY1LTU0ZTEtNGUyNS1hZGRjLTBlOGIyY2MxNzc3YSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImlhdCI6MTc0OTIyMzM0MiwiZXhwIjoxNzQ5MzA5NzQyfQ.MgB_LXPybFFMmrYOQBc3sVzuvhnb73ZHYig5n76Ajmw
+DELETE http://localhost:4000/api/products/f89e2769-c9a1-4d42-ba9d-59e1caaf42c5
+Authorization: Bearer {{token}}
 
-### Add to Cart - Add new or update quantity
-POST http://localhost:4000/cart/add
+###add to cart - Add new or update quantity
+POST http://localhost:4000/api/cart/add
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "product_id": "f89e2769-c9a1-4d42-ba9d-59e1caaf42c5",
+  "product_id": "a57caac4-989e-4434-a5ac-e7f059f4cb87",
   "quantity": 2
 }
 
-### Get Cart Items
-GET http://localhost:4000/cart
+### get cart items
+GET http://localhost:4000/api/cart
 Authorization: Bearer {{token}}
 
 ### Update Cart Quantity
-PUT http://localhost:4000/cart/update
+PUT http://localhost:4000/api/cart/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "cart_item_id": "b13e84f1-d57f-4b82-a1eb-2d8085f359fa",
+  "cart_item_id": "5f5b9ac4-a0fd-4579-a9d0-2a921f60b019",
   "quantity": 5
 }
 
 ### Delete Cart Item
-DELETE http://localhost:4000/cart/delete
+DELETE http://localhost:4000/api/cart/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "cart_item_id": "b13e84f1-d57f-4b82-a1eb-2d8085f359fa"
+  "cart_item_id": "5f5b9ac4-a0fd-4579-a9d0-2a921f60b019"
 }
 
 ### Clear Cart
 DELETE http://localhost:4000/cart/clear
+Authorization: Bearer {{token}}
+
+### Create Order
+POST http://localhost:4000/api/orders/create
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### Get User Orders
+GET http://localhost:4000/api/orders
 Authorization: Bearer {{token}}

@@ -4,6 +4,7 @@ import cors from 'cors'
 import authRoutes from './routes/auth.js';
 import productsRouter from './routes/products.js';
 import cartRoutes from './routes/cart.js'
+import orderRoutes from './routes/order.js'
 dotenv.config();
 
 const app=express();
@@ -15,6 +16,6 @@ app.get("/",(req,res)=>{
     res.status(200).send("working")
 })
 app.use('/api/products', productsRouter);
-app.use('/cart', cartRoutes);
-
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders',orderRoutes)
 app.listen(4000);
