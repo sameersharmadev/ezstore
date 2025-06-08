@@ -17,15 +17,23 @@ export const addToCart=async(req,res)=>{
         res.status(500).json({error:'Error adding item'})
     }
 }
-export const getCartItems=async(req,res)=>{
-    const userId=req.user.id
-    try{
-        const result=await pool.query('SELECT ci.id as cart_item_id, ci.quantity, p.id as product_id, p.name, p.description, p.price, p.stock, (ci.quantity * p.price) AS total_price FROM cart_items ci JOIN products p ON ci.product_id=p.id WHERE ci.user_id=$1',[userId])
-        res.status(200).json(result.rows)
-    }catch(error){
-        res.status(500).json({error:'Error fetching cart items'})
+export const getCartItems = async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const result = await pool.query(
+            `SELECT ci.id AS cart_item_id, ci.quantity, p.id AS product_id, p.name, p.description, p.price, p.stock, (ci.quantity * p.price) AS total_price,pi.image_url AS primary_image
+            FROM cart_items ci
+            JOIN products p ON ci.product_id = p.id
+            LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = true
+            WHERE ci.user_id = $1`,
+            [userId]
+        );
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error fetching cart items:', error);
+        res.status(500).json({ error: 'Error fetching cart items' });
     }
-}
+};
 export const updateCartQuantity = async (req, res) => {
     const userId = req.user.id;
     const { cart_item_id, quantity } = req.body;

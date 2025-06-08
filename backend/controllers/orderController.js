@@ -27,20 +27,35 @@ export const createOrder=async(req,res)=>{
 export const getUserOrders = async (req, res) => {
     const userId = req.user.id;
     try {
-        const ordersRes = await pool.query(`SELECT id, total_price, created_at FROM orders WHERE user_id = $1 ORDER BY created_at DESC`,[userId]);
+        const ordersRes = await pool.query(
+            `SELECT id, total_price, created_at FROM orders WHERE user_id = $1 ORDER BY created_at DESC`,
+            [userId]
+        );
         const orders = ordersRes.rows;
+
         if (orders.length === 0) {
             return res.status(200).json({ message: 'No orders found', orders: [] });
         }
+
         const ordersWithItems = await Promise.all(
             orders.map(async (order) => {
-                const itemsRes = await pool.query(`SELECT oi.product_id, p.name, p.description, oi.quantity, oi.price, (oi.quantity * oi.price) AS total_item_price FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = $1`,[order.id]);
-                return {...order,items: itemsRes.rows,};
+                const itemsRes = await pool.query(
+                    `SELECT oi.product_id, p.name, p.description, oi.quantity, oi.price, 
+                        (oi.quantity * oi.price) AS total_item_price,
+                        pi.image_url AS primary_image
+                    FROM order_items oi
+                    JOIN products p ON oi.product_id = p.id
+                    LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = true
+                    WHERE oi.order_id = $1`,
+                    [order.id]
+                );
+                return { ...order, items: itemsRes.rows };
             })
         );
+
         res.status(200).json(ordersWithItems);
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching user orders:', error);
         res.status(500).json({ error: 'Failed to fetch user orders' });
     }
 };
